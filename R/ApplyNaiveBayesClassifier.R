@@ -60,8 +60,8 @@ requireNamespace('AdaptGauss')
   
   if (PlotIt) {
     # zeichnen
-	requireNamespace('DataVisualisation')
-    DataVisualisation::PlotPixMatrix(cbind(NaiveBayesPosteriori, BayesCls))
+	requireNamespace('DataVisualizations')
+    DataVisualizations::PixelMatrixPlot(cbind(NaiveBayesPosteriori, BayesCls))
   }  #  if PlotIt==1  # zeichnen
   
   return(BayesCls)
