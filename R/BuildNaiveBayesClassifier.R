@@ -27,6 +27,41 @@ requireNamespace('AdaptGauss')
   AnzDaten = vec[1]
   AnzVariablen = vec[2]
   
+#ind1=which(TrainAndTest$TrainCls==1)
+#ind2=which(TrainAndTest$TrainCls==2)
+
+#robust mean
+#Means1=apply(X = TrainAndTest$TrainData[ind1,],FUN = mean,MARGIN = 2,0.1)
+#Means2=apply(X = TrainAndTest$TrainData[ind2,],FUN = mean,MARGIN = 2,0.1)
+#robust std
+#stdrobust=function (x, lowInnerPercentile = 25) 
+#{
+ # if (is.vector(x) || (is.matrix(x) && dim(x)[1] == 1)) 
+ #   dim(x) <- c(length(x), 1)
+ # lowInnerPercentile <- max(1, min(lowInnerPercentile, 49))
+ # hiInnerPercentile <- 100 - lowInnerPercentile
+  #faktor <- sum(abs(qnorm(t(c(lowInnerPercentile, hiInnerPercentile)/100), 
+ #                         0, 1)))
+ # std <- sd(x, na.rm = TRUE)
+ # p <- c(lowInnerPercentile, hiInnerPercentile)/100
+ # quartile <- prctile(x, p)
+ # if (ncol(x) > 1) 
+ #   iqr <- quartile[2, ] - quartile[1, ]
+#  else iqr <- quartile[2] - quartile[1]
+#  shat <- c()
+#  for (i in 1:ncol(x)) {
+ #   shat[i] <- min(std[i], iqr[i]/faktor, na.rm = TRUE)
+#  }
+#  dim(shat) <- c(1, ncol(x))
+#  colnames(shat) <- colnames(x)
+#  return(shat)
+#}
+#std1=apply(X = TrainAndTest$TrainData[ind1,],FUN = stdrobust,MARGIN = 2,0.2)
+#std2=apply(X = TrainAndTest$TrainData[ind2,],FUN = stdrobust,MARGIN = 2,0.2)
+
+#weights=c(length(ind1),length(ind2))/nrow(TrainAndTest$TrainData)    
+#bayesclas=Classifiers::ApplyNaiveBayesClassifier(Data = TrainAndTest$TrainData,c(1,2),t(cbind(Means1,Means2)),t(cbind(std1,std2)),WeightsPerClass = weights)
+	
   # bestimmen des Modells mit Mean, Sdev und Weight der einzelen Klassen in den jeweiligen variablen
   V = ClassCount(Cls)
   UniqueClasses = V$UniqueClasses
