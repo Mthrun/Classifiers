@@ -14,7 +14,7 @@ ApplyNaiveBayesClassifier=function(Data,UniqueClasses,MeanPerClass,StdPerClass,W
 # OUTPUT
 # BayesCls(1:d)                    die Klassifizierung des naive bayes Klassifikators
 #author: MT 01/17  
-requireNamespace('AdaptGauss')
+
   vec = dim(Data)
   AnzDaten = vec[1]
   AnzVariablen = vec[2]
@@ -29,8 +29,8 @@ requireNamespace('AdaptGauss')
     M = MeanPerClass[, i]
     S = StdPerClass[, i]
     W = WeightsPerClass
-    Posteriors = AdaptGauss::Bayes4Mixtures(D, M, S, W)$Posteriors  # Posteriors(1:AnzDaten,1:NrOfClasses] die nach Klassen geordneten Posterioris fuer die i-te variable
-    DecisionBoundaries = AdaptGauss::BayesDecisionBoundaries(M, S, W)  # DecisionBoundaries(1:(NrOfClasses-1)) fuer die i-te variable
+    Posteriors = Bayes4Mixtures(D, M, S, W)$Posteriors  # Posteriors(1:AnzDaten,1:NrOfClasses] die nach Klassen geordneten Posterioris fuer die i-te variable
+    DecisionBoundaries = BayesDecisionBoundaries(M, S, W)  # DecisionBoundaries(1:(NrOfClasses-1)) fuer die i-te variable
     # festhalten
     for (c in 1:NrOfClasses) {
       BayesPost[, i, c] = Posteriors[, c]
@@ -53,15 +53,14 @@ requireNamespace('AdaptGauss')
   } # for c=1:NrOfClasses
   
   # jetzt bayes Klassifizieren
-  #BayesCls = Cls * NaN   # initialisieren
+  BayesCls = Cls * NaN   # initialisieren
   MaxInd = apply(NaiveBayesPosteriori,1,which.max)
   #matlab: [MaxBayes MaxInd] = nanmax(NaiveBayesPosteriori,[],2)  # das maximum bestimmen, dies ist der Index der zuzuordnenden Klasse
   BayesCls = UniqueClasses[MaxInd]                      # die entsprechende Klasse zuordnen
   
   if (PlotIt) {
     # zeichnen
-	requireNamespace('DataVisualizations')
-    DataVisualizations::PixelMatrixPlot(cbind(NaiveBayesPosteriori, BayesCls))
+    PlotPixMatrix(cbind(NaiveBayesPosteriori, Cls, BayesCls))
   }  #  if PlotIt==1  # zeichnen
   
   return(BayesCls)

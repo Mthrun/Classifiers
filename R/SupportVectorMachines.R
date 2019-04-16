@@ -52,11 +52,11 @@ SupportVectorMachines=function(TrainData,TrainCls,TestData,
 #                             probA, probB: numeric vectors of length k(k-1)/2, k number of classes, containing the parameters of the logistic distributions fitted to the decision values of the binary classifiers (1 / (1 + exp(a x + b))).
 #author: MT 2018
   requireNamespace('e1071')
-  
+
   if(missing(Nu))
     model=e1071::svm(x=TrainData,y=TrainCls,scale=Scale,type=Method,kernel=Kernel,degree=PolynomialDegree,gamma=Gamma,coef0=CoefR,cost=CostC)
   else
-    model=e1071::svm(x=TrainData,y=TrainCls,scale=Scale,type=Method,kernel=Kernel,degree=PolynomialDegree,gamma=Gamma,coef0=CoefR,cost=CostC,nu=NU)
+    model=e1071::svm(x=TrainData,y=TrainCls,scale=Scale,type=Method,kernel=Kernel,degree=PolynomialDegree,gamma=Gamma,coef0=CoefR,cost=CostC,nu=Nu)
   
   pred_train <-predict(model,TestData)
   

@@ -1,16 +1,3 @@
-export(AnalysisOfClassifier)
-export(ApplyNaiveBayesClassifier)
-export(BuildNaiveBayesClassifier)
-
-export(CentroidClassifier)
-export(HyperPlaneClassifier)
-export(KNNclassifier)
-export(KNNclassifierDistance)
-export(RandomForestClassifier)
-export(splitQuoted)
-export(splitSample)
-export(SupportVectorMachines)
-
-importFrom("stats", "sd")
+exportPattern("^[[:alpha:]]+")
  importFrom("graphics", "plot")
-  importFrom("stats", "as.dist")
+  #importFrom("utils", "setWinProgressBar", "winProgressBar")

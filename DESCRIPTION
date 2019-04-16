@@ -1,17 +1,15 @@
 Package: Classifiers
 Type: Package
-Title: Common Supervised Machine Learning algorithms
-Version: 1.4.0
-Date: 2018-02-22
+Title: Common Supervised Machine Learning Algorithms
+Version: 1.4.2
+Date: 2019-03-27
 Author: Michael Thrun, Rabea Griese, Alfred Ultsch
-Maintainer: Michael Thrun <m.thrun@gmx.net>
-Description: Conventional Supervised Maschine Learning algorithms.
+Maintainer: Michael Thrun <mthrun@mathematik.uni-marburg.de>
+Description: Conventional supervised learning algorithms.
 LazyLoad: yes
-Imports:
-Suggests: randomForest, AdaptGauss, Distances, DataVisualizations, e1071
+Imports: 
+Suggest: randomForest, AdaptGauss, Distances, DataVisualizations, e1071
 Depends: R (>= 2.10)
-License: GPL-3
-URL: 
+License: CC BY-NC 4.0
+LazyLoad: yes
 Encoding: UTF-8
-NeedsCompilation: no
-Packaged: 2017-08-22 09:49:24 UTC; MT

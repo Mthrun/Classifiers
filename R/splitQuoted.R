@@ -1,4 +1,5 @@
-splitQuoted =function(Data,Cls,Percentage, Key=NULL){
+`splitquoted` = splitQuoted <-
+function(Data,Cls,Percentage, Key=NULL){
 
 # function [TrainData, TestData, TrainCls,TestCls] = splitquoted(Data,Cls,Percentage);
 # % [TrainData, TestData] = splitquoted(Data,Cls,Percentage);

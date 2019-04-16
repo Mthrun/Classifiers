@@ -50,124 +50,166 @@ KNNclassifierDistance = function(K=1,TrainData,TrainCls,TestData=NULL,ShowObs=F,
   # Euclidean, Manhattan, Canberra or Minkowski distance, the sum is scaled up proportionally to the
   # number of columns used. If all pairs are excluded when calculating a particular distance, the value
   # is NA.
-  TrainCls=as.factor(TrainCls)
-TrnG=as.numeric(TrainCls)
-CodeMeaning=data.frame(TrnG,TrainCls)
-requireNamespace('Distances')
-TK=sort(as.matrix(table(TrnG)),decreasing=F)
-if(K>TK[1])
-{
-stop(c("
-NOTES: 
-sorry, the value of K ","(K=",K,") ",
-"you have selected is bigger than the capacity of one class in your training data set",
-"(","the capacity is ",TK[1],")",",","please choose a less value for K"))
-}
- 
-if(is.null(TestData)==T) 
-{
-IsTst=1
-TestData<-as.matrix(TrainData)
-}else
-{
-IsTst=0
-}
+  TrainCls = as.factor(TrainCls)
+  TrnG = as.numeric(TrainCls)
+  CodeMeaning = data.frame(TrnG, TrainCls)
+  
+  TK = sort(as.matrix(table(TrnG)), decreasing = F)
+  if (K > TK[1])
+  {
+    stop(
+      c(
+        "
+        NOTES:
+        sorry, the value of K ",
+        "(K=",
+        K,
+        ") ",
+        "you have selected is bigger than the capacity of one class in your training data set",
+        "(",
+        "the capacity is ",
+        TK[1],
+        ")",
+        ",",
+        "please choose a less value for K"
+      )
+      )
+  }
+  
+  if (is.null(TestData) == T)
+  {
+    IsTst = 1
+    TestData <- as.matrix(TrainData)
+  } else
+  {
+    IsTst = 0
+  }
+  
+  if (is.matrix(TestData) == F)
+  {
+    TestData <- as.matrix(TestData)
+  }
+  
+  TrainData <- as.matrix(TrainData)
+  ElmTrnG = union(TrnG, TrnG)
+  LevTrnG = length(ElmTrnG)
+  TrnTotal = cbind(TrnG, TrainData)
+  
+  NTestData = nrow(TestData)
+  NTrnTotal = nrow(TrnTotal)
+  
+  VoteResult = NULL
+  VoteResultList = NULL
+  
+  #Anpassung MT 03/2019
+  Total = rbind(TestData, TrainData)
+  nt=nrow(TestData) #cases
+  TotalMatrix=DistanceMatrix(
+      Total, method = method , dim = p
+    )
+    n=nrow(TotalMatrix)
 
-if(is.matrix(TestData)==F) 
-{
-TestData<-as.matrix(TestData)
-}
+  #for (i in 1:nrow(TestData))
+  for (i in 1:nt)
+  {
+    RankBoardI <- NULL
+    RankBoardIJ <- NULL
+    
 
-TrainData<-as.matrix(TrainData)
-ElmTrnG=union(TrnG,TrnG)
-LevTrnG=length(ElmTrnG)
-TrnTotal=cbind(TrnG,TrainData)
-
-NTestData=nrow(TestData)
-NTrnTotal=nrow(TrnTotal)
-
-VoteResult=NULL
-VoteResultList=NULL
-
-for(i in 1:nrow(TestData))
-{
-
-RankBoardI<-NULL
-RankBoardIJ<-NULL 
-
-Total=rbind(TestData[i,],TrainData)
-# if(is.null(DistanceMatrix))
-  RankBoardI=as.matrix(as.dist(Distances::DistanceMatrix(Total, method = method ,dim=p))[1:nrow(TrainData)])
-# else
-#   RankBoardI=as.matrix(as.dist(Distances::DistanceMatrix)[1:nrow(TrainData)])
-
-RankBoardIJ=cbind(TrnG,RankBoardI)
-
-VoteAndWeight=RankBoardIJ[sort(RankBoardIJ[,2],index.return=T)$ix[1:K],1:2]
-TempVote4TestDataI=RankBoardIJ[sort(RankBoardIJ[,2],index.return=T)$ix[1:K],1]
-ElmVote=union(TempVote4TestDataI,TempVote4TestDataI)
-
-CountVote=as.matrix(sort(table(TempVote4TestDataI),decreasing=T))
-TempWinner=as.numeric(rownames(CountVote))
-
-if(length(CountVote)==1|K==1)
-{
-Winner=TempWinner[1]
-TestDataIBelong=union(CodeMeaning$TrainCls[which(CodeMeaning$TrnG==Winner)],
-CodeMeaning$TrainCls[which(CodeMeaning$TrnG==Winner)])
-VoteResultNode=data.frame(TestDataIBelong)
-VoteResultList=rbind(VoteResultList,VoteResultNode)
-
-}else   
-{
-NumOfTie=CountVote[1]
-FinalList=NULL
-
-j=1
-TempWeight=sum(VoteAndWeight[which(VoteAndWeight[,1]==TempWinner[j]),2])
-FinalList=data.frame(TempWinner[j],TempWeight)
-while(CountVote[j]==CountVote[j+1]&j<length(CountVote))
-{
-TempWeight=sum(VoteAndWeight[which(VoteAndWeight[,1]==TempWinner[j+1]),2])
-FinalListNode=c(TempWinner[j+1],TempWeight)
-FinalList=rbind(FinalList,FinalListNode)
-j=j+1  
-}
-
-FinalList=FinalList[sort(FinalList$TempWeight,index.return=T)$ix[1],]
-TestDataIBelong=union(CodeMeaning$TrainCls[which(CodeMeaning$TrnG==FinalList[1,1])],
-CodeMeaning$TrainCls[which(CodeMeaning$TrnG==FinalList[1,1])])
-VoteResultNode=data.frame(TestDataIBelong)
-VoteResultList=rbind(VoteResultList,VoteResultNode)
-
-}
-
-}
-
-if(IsTst==1)
-{
-CheckT=as.matrix(table(data.frame(VoteResultList,TrainCls)))
-AccuStat=1-sum(CheckT-diag(diag(CheckT)))/length(TrnG)
-print(CheckT)
-cat("the classification accuracy of this algorithm on this training dataset is: ",
-AccuStat*100,"%","\n\n\n")
-
-}
-
-if(IsTst==1&ShowObs==F){
-result=data.frame(VoteResultList,TrainCls)
-}else
-{
-if(IsTst==1&ShowObs==T){
-result=data.frame(TestData,VoteResultList,TrainCls)
-}else
-{
-if(ShowObs==F){
-result=data.frame(VoteResultList)
-}else{
-result=data.frame(TestData,VoteResultList)
-}
-}
-}
-return(list(result=result,KNNTestCls=as.vector(VoteResultList$TestDataIBelong)))
+    #Total = rbind(TestData[i, ], TrainData)
+    # if(is.null(DistanceMatrix))
+    #RankBoardI = as.matrix(as.dist(DistanceMatrix(
+    #  Total, method = method , dim = p
+    #))[1:nrow(TrainData)])
+    #Anpassung MT 03/2019
+    RankBoardI = as.matrix(as.dist(
+      TotalMatrix[c(i,(nt+1):n),c(i,(nt+1):n)]
+    
+    )[1:nrow(TrainData)])
+    
+    # else
+    #   RankBoardI=as.matrix(as.dist(DistanceMatrix)[1:nrow(TrainData)])
+    
+    RankBoardIJ = cbind(TrnG, RankBoardI)
+    
+    VoteAndWeight = RankBoardIJ[sort(RankBoardIJ[, 2], index.return = T)$ix[1:K], 1:2]
+    TempVote4TestDataI = RankBoardIJ[sort(RankBoardIJ[, 2], index.return =
+                                            T)$ix[1:K], 1]
+    ElmVote = union(TempVote4TestDataI, TempVote4TestDataI)
+    
+    CountVote = as.matrix(sort(table(TempVote4TestDataI), decreasing = T))
+    TempWinner = as.numeric(rownames(CountVote))
+    
+    if (length(CountVote) == 1 | K == 1)
+    {
+      Winner = TempWinner[1]
+      TestDataIBelong = union(CodeMeaning$TrainCls[which(CodeMeaning$TrnG ==
+                                                           Winner)],
+                              CodeMeaning$TrainCls[which(CodeMeaning$TrnG ==
+                                                           Winner)])
+      VoteResultNode = data.frame(TestDataIBelong)
+      VoteResultList = rbind(VoteResultList, VoteResultNode)
+      
+    } else
+    {
+      NumOfTie = CountVote[1]
+      FinalList = NULL
+      
+      j = 1
+      TempWeight = sum(VoteAndWeight[which(VoteAndWeight[, 1] == TempWinner[j]), 2])
+      FinalList = data.frame(TempWinner[j], TempWeight)
+      while (CountVote[j] == CountVote[j + 1] & j < length(CountVote))
+      {
+        TempWeight = sum(VoteAndWeight[which(VoteAndWeight[, 1] == TempWinner[j +
+                                                                                1]), 2])
+        FinalListNode = c(TempWinner[j + 1], TempWeight)
+        FinalList = rbind(FinalList, FinalListNode)
+        j = j + 1
+      }
+      
+      FinalList = FinalList[sort(FinalList$TempWeight, index.return = T)$ix[1], ]
+      TestDataIBelong = union(CodeMeaning$TrainCls[which(CodeMeaning$TrnG ==
+                                                           FinalList[1, 1])],
+                              CodeMeaning$TrainCls[which(CodeMeaning$TrnG ==
+                                                           FinalList[1, 1])])
+      VoteResultNode = data.frame(TestDataIBelong)
+      VoteResultList = rbind(VoteResultList, VoteResultNode)
+      
+    }
+    
+  }
+  
+  if (IsTst == 1)
+  {
+    CheckT = as.matrix(table(data.frame(VoteResultList, TrainCls)))
+    AccuStat = 1 - sum(CheckT - diag(diag(CheckT))) / length(TrnG)
+    print(CheckT)
+    cat(
+      "the classification accuracy of this algorithm on this training dataset is: ",
+      AccuStat * 100,
+      "%",
+      "\n\n\n"
+    )
+    
+  }
+  
+  if (IsTst == 1 & ShowObs == F) {
+    result = data.frame(VoteResultList, TrainCls)
+  } else
+  {
+    if (IsTst == 1 & ShowObs == T) {
+      result = data.frame(TestData, VoteResultList, TrainCls)
+    } else
+    {
+      if (ShowObs == F) {
+        result = data.frame(VoteResultList)
+      } else{
+        result = data.frame(TestData, VoteResultList)
+      }
+    }
+  }
+  return(list(
+    result = result,
+    KNNTestCls = as.vector(VoteResultList$TestDataIBelong)
+  ))
 }

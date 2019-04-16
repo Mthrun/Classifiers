@@ -8,9 +8,7 @@ randomForest classifier
 generation of a randomForest classification	
 }
 \usage{
-RandomForestClassifier(Data,Names, Cls, NumberOfTrees = 500, 
-
-VariableImportance = TRUE, Seed, PlotIt = TRUE, Verbose = F)
+RandomForestClassifier(Data,Names, Cls, NumberOfTrees = 500, VariableImportance = TRUE, Seed, PlotIt = TRUE, Verbose = F)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -39,7 +37,9 @@ wether to ploz error versus trees
 whether to show results of forest, default FALSE
 }
 }
-
+\details{
+%%  ~~ If necessary, more details than the description above ~~
+}
 \value{
 list V with
 

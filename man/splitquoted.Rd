@@ -1,16 +1,15 @@
-\name{splitQuoted}
-\alias{splitQuoted}
-\title{splitQuoted}
+\name{splitquoted}
+\alias{splitquoted}
+\title{splitquoted}
 
 \description{quota-split of Data randomly into disjunct sets TrainData and TestData}
 \usage{
-splitQuoted(Data, Cls, Percentage, Key = NULL)
+splitquoted(Data, Cls, Percentage)
 }
 \arguments{
   \item{Data}{vector or matrix, n cases,  d variables}
   \item{Cls}{vector of classifications}
   \item{Percentage}{ between .1 and 99.9}
-    \item{Key}{if key given}
 }
 \value{List with
   \item{TrainData}{}

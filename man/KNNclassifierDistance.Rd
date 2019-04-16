@@ -7,9 +7,7 @@ k-Nearest Neighbour Classification of Versatile Distance Version
 k-nearest neighbour classification of versatile Distance version for test set from training set. For each row of the test set, the k nearest (in multiple distances) training set vectors are found, and the classification is decided by majority vote. This function allows you measure the distance bewteen vectors by six different means. K Threshold Value Check and Same K_i Problem Dealing are also been considered.
 }
 \usage{
-KNNclassifierDistance( K = 1, TrainData, TrainCls, TestData,
-
-ShowObs=F,method = "euclidean",p =2)
+KNNclassifierDistance( K = 1, TrainData, TrainCls, TestData,ShowObs=F,method = "euclidean",p =2)
 }
 \arguments{
   \item{K}{
@@ -95,11 +93,9 @@ If you want to use the distance measure "binary", the vectors must be binary bit
 #dbt approach
 \donttest{
 datas=splitquoted(FCPS$Hepta$Data,FCPS$Hepta$Cls,80)
-KNNTestCls=as.numeric(KNNclassifierDistance(K=3,datas$TrainData,datas$TrainCls,
-
-datas$TestData,ShowObs=FALSE,method="euclidean",p = 2)$KNNTestCls)
+KNNTestCls=as.numeric(KNNclassifierDistance(K=3,datas$TrainData,datas$TrainCls,datas$TestData,ShowObs=FALSE,method="euclidean",p = 2)$KNNTestCls)
 ClsToTrueCls(KNNTestCls,datas$TestCls)$accuracy
-
+}
 #general approach
 data(iris)
 ## Define data
@@ -111,7 +107,6 @@ TstX<-iris[c(1:20,50:70,120:140),1:4]
 TstX<-NULL
 ## Call function
 KNNclassifierDistance(K=5,TrnX,OrigTrnG,TstX,ShowObs=FALSE,method="euclidean",p = 2)
-}
 }
 \keyword{ knn }
 \keyword{ dist }

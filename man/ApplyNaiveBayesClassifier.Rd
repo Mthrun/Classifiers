@@ -8,9 +8,7 @@ ApplyNaiveBayesClassifier
  Anwendung eines Naiven Bayes Klassifiers:
 }
 \usage{
-ApplyNaiveBayesClassifier(Data,UniqueClasses,
-
-MeanPerClass,StdPerClass,WeightsPerClass, PlotIt=TRUE)
+ApplyNaiveBayesClassifiern(Data,UniqueClasses,MeanPerClass,StdPerClass,WeightsPerClass, PlotIt=TRUE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
