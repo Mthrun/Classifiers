@@ -95,14 +95,14 @@ probA, probB: numeric vectors of length k(k-1)/2, k number of classes, containin
 Chang, Chih-Chung, and Chih-Jen Lin: LIBSVM: a library for support vector machines, ACM transactions on intelligent systems and technology (TIST), 2. Jg., Nr. 3, S. 27, 2011.
 }
 \author{
-For this Wrapper: Michael Thrun, for the internal algorithm please see \code{e1071} package
+For this Wrapper: Michael Thrun, for the internal algorithm please see \pkg{e1071} package
 }
 \note{
-Michael Thrun just extended the Documentation and build an easier to use wrapper for the \code{e1071::svm} function
+Michael Thrun just extended the Documentation and build an easier to use wrapper for the \code{\link[e1071]{svm}}function
 }
 
 \seealso{
-\code{\link{e1071::svm}}
+\code{\link[e1071]{svm}}
 }
 \examples{
 data(USelectionPoll)
