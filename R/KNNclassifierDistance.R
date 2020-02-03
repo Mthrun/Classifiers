@@ -1,4 +1,4 @@
-KNNclassifierDistance = function(K=1,TrainData,TrainCls,TestData=NULL,ShowObs=F, method = "euclidean",p = 2){
+KNNclassifierDistance = function(K=1,TrainData,TrainCls,TestData=NULL,ShowObs=F, method = "euclidean",p = 2,DTW_windowsize=5){
   # [KNNTestCls,NearestInd ] = KNNclassifier(k,TrainData,TrainCls,TestData,Verbose);
   #  k-nearest neighbor clssifier
   # INPUT
@@ -104,11 +104,16 @@ KNNclassifierDistance = function(K=1,TrainData,TrainCls,TestData=NULL,ShowObs=F,
   #Anpassung MT 03/2019
   Total = rbind(TestData, TrainData)
   nt=nrow(TestData) #cases
+  if(method!="DTW"){
   TotalMatrix=DistanceMatrix(
       Total, method = method , dim = p
     )
-    n=nrow(TotalMatrix)
-
+    
+  }else{
+    requireNamespace('dtwclust')
+    TotalMatrix=as.matrix(dtwclust::dtw_lb(Total,window.size = DTW_windowsize))
+  }
+  n=nrow(TotalMatrix)
   #for (i in 1:nrow(TestData))
   for (i in 1:nt)
   {
