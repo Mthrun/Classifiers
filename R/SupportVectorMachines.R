@@ -2,7 +2,7 @@ SupportVectorMachines=function(TrainData,TrainCls,TestData,
                                                     
                                                     Method="C-classification",Scale=rep(FALSE,ncol(TrainData)),
                                                     
-                                                    Kernel="linear",Gamma=round(1/ncol(TrainData),2),CoefR=0,PolynomialDegree=3,CostC=1,Nu)
+                                                    Kernel="linear",Gamma=round(1/ncol(TrainData),2),CoefR=0,PolynomialDegree=3,CostC=1,Nu,...)
 {
 #Results=SupportVectorMachines(TrainData,TrainCls,TestData, Method="C-classification",Scale=rep(FALSE,ncol(TrainData)),Kernel="linear",Gamma=round(1/ncols(TrainData),2),CoefR=0,PolynomialDegree=3,CostC=1,Nu) 
 #
@@ -54,9 +54,9 @@ SupportVectorMachines=function(TrainData,TrainCls,TestData,
   requireNamespace('e1071')
 
   if(missing(Nu))
-    model=e1071::svm(x=TrainData,y=TrainCls,scale=Scale,type=Method,kernel=Kernel,degree=PolynomialDegree,gamma=Gamma,coef0=CoefR,cost=CostC)
+    model=e1071::svm(x=TrainData,y=TrainCls,scale=Scale,type=Method,kernel=Kernel,degree=PolynomialDegree,gamma=Gamma,coef0=CoefR,cost=CostC,...)
   else
-    model=e1071::svm(x=TrainData,y=TrainCls,scale=Scale,type=Method,kernel=Kernel,degree=PolynomialDegree,gamma=Gamma,coef0=CoefR,cost=CostC,nu=Nu)
+    model=e1071::svm(x=TrainData,y=TrainCls,scale=Scale,type=Method,kernel=Kernel,degree=PolynomialDegree,gamma=Gamma,coef0=CoefR,cost=CostC,nu=Nu,...)
   
   pred_train <-predict(model,TestData)
   
