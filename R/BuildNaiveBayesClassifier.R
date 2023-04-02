@@ -1,4 +1,4 @@
-BuildNaiveBayesClassifier=function(Data,Cls, PlotIt=T) {
+BuildNaiveBayesClassifier=function(Data,Cls, PlotIt=TRUE) {
 # V = BuildNaiveBayesClassifier(Data,Cls)   
 # BayesCls=V$BayesCls
 # UniqueClasses=V$UniqueClasses
@@ -82,7 +82,7 @@ BuildNaiveBayesClassifier=function(Data,Cls, PlotIt=T) {
   
   if (PlotIt) {
     # zeichnen
-    PlotPixMatrix(cbind(NaiveBayesPosteriori, Cls, BayesCls))
+    print(DataVisualizations::Pixelmatrix(cbind(NaiveBayesPosteriori, Cls, BayesCls)))
   }  #  if PlotIt==1  # zeichnen
   
   return(list(

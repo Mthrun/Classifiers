@@ -11,7 +11,9 @@ KNNclassifier(k, TrainData, TrainCls, TestData,  Verbose)
 \item{TestData}{matrix [m,d] containing unclassified data Verbose             default ==1, progress report}
 \item{Verbose}{Optional: progress report. Default: 1}
 }
-\value{KNNTestCls           vector [1:m], a KNN classification of TestData}
+\value{
+\item{KNNTestCls}{Vector [1:m], a KNN classification of TestData}
+}
 \description{
   k-nearest neighbor clssifier}
 \author{

@@ -1,4 +1,4 @@
-KNNclassifierDistance = function(K=1,TrainData,TrainCls,TestData=NULL,ShowObs=F, method = "euclidean",p = 2,DTW_windowsize=5){
+KNNclassifierDistance = function(K=1,TrainData,TrainCls,TestData=NULL,ShowObs=FALSE, method = "euclidean",p = 2,DTW_windowsize=5){
   # [KNNTestCls,NearestInd ] = KNNclassifier(k,TrainData,TrainCls,TestData,Verbose);
   #  k-nearest neighbor clssifier
   # INPUT
@@ -54,7 +54,7 @@ KNNclassifierDistance = function(K=1,TrainData,TrainCls,TestData=NULL,ShowObs=F,
   TrnG = as.numeric(TrainCls)
   CodeMeaning = data.frame(TrnG, TrainCls)
   
-  TK = sort(as.matrix(table(TrnG)), decreasing = F)
+  TK = sort(as.matrix(table(TrnG)), decreasing = FALSE)
   if (K > TK[1])
   {
     stop(
@@ -76,7 +76,7 @@ KNNclassifierDistance = function(K=1,TrainData,TrainCls,TestData=NULL,ShowObs=F,
       )
   }
   
-  if (is.null(TestData) == T)
+  if (is.null(TestData) == TRUE)
   {
     IsTst = 1
     TestData <- as.matrix(TrainData)
@@ -85,7 +85,7 @@ KNNclassifierDistance = function(K=1,TrainData,TrainCls,TestData=NULL,ShowObs=F,
     IsTst = 0
   }
   
-  if (is.matrix(TestData) == F)
+  if (is.matrix(TestData) == FALSE)
   {
     TestData <- as.matrix(TestData)
   }
@@ -137,12 +137,12 @@ KNNclassifierDistance = function(K=1,TrainData,TrainCls,TestData=NULL,ShowObs=F,
     
     RankBoardIJ = cbind(TrnG, RankBoardI)
     
-    VoteAndWeight = RankBoardIJ[sort(RankBoardIJ[, 2], index.return = T)$ix[1:K], 1:2]
+    VoteAndWeight = RankBoardIJ[sort(RankBoardIJ[, 2], index.return = TRUE)$ix[1:K], 1:2]
     TempVote4TestDataI = RankBoardIJ[sort(RankBoardIJ[, 2], index.return =
-                                            T)$ix[1:K], 1]
+                                            TRUE)$ix[1:K], 1]
     ElmVote = union(TempVote4TestDataI, TempVote4TestDataI)
     
-    CountVote = as.matrix(sort(table(TempVote4TestDataI), decreasing = T))
+    CountVote = as.matrix(sort(table(TempVote4TestDataI), decreasing = TRUE))
     TempWinner = as.numeric(rownames(CountVote))
     
     if (length(CountVote) == 1 | K == 1)
@@ -172,7 +172,7 @@ KNNclassifierDistance = function(K=1,TrainData,TrainCls,TestData=NULL,ShowObs=F,
         j = j + 1
       }
       
-      FinalList = FinalList[sort(FinalList$TempWeight, index.return = T)$ix[1], ]
+      FinalList = FinalList[sort(FinalList$TempWeight, index.return = TRUE)$ix[1], ]
       TestDataIBelong = union(CodeMeaning$TrainCls[which(CodeMeaning$TrnG ==
                                                            FinalList[1, 1])],
                               CodeMeaning$TrainCls[which(CodeMeaning$TrnG ==
@@ -198,15 +198,15 @@ KNNclassifierDistance = function(K=1,TrainData,TrainCls,TestData=NULL,ShowObs=F,
     
   }
   
-  if (IsTst == 1 & ShowObs == F) {
+  if (IsTst == 1 & ShowObs == FALSE) {
     result = data.frame(VoteResultList, TrainCls)
   } else
   {
-    if (IsTst == 1 & ShowObs == T) {
+    if (IsTst == 1 & ShowObs == TRUE) {
       result = data.frame(TestData, VoteResultList, TrainCls)
     } else
     {
-      if (ShowObs == F) {
+      if (ShowObs == FALSE) {
         result = data.frame(VoteResultList)
       } else{
         result = data.frame(TestData, VoteResultList)

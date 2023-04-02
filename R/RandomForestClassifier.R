@@ -1,4 +1,7 @@
-RandomForestClassifier=function(TrainData,TrainCls,TestData,Names,NumberOfTrees=500,VariableImportance=TRUE,Seed,PlotIt=TRUE,Verbose=FALSE,ABCanalysis=FALSE){
+RandomForestClassifier=function(TrainData,TrainCls,TestData,Names,
+                                NumberOfTrees=500,VariableImportance=TRUE,
+                                Seed,PlotIt=TRUE,Verbose=FALSE,ABCanalysis=FALSE,
+                                Fast=FALSE){
 # V = RandomForestClassifier(TrainData,TrainCls,NumberOfTrees=500)
 # randomForest classifier
 #
@@ -36,7 +39,7 @@ RandomForestClassifier=function(TrainData,TrainCls,TestData,Names,NumberOfTrees=
 # author MT 2017
 # 1.Editor: MT 2019
   #requireNamespace("pmml")
-  requireNamespace("randomForest")
+  
   if(!is.matrix(TrainData)){
     warning('"TrainData" is not a matrix. calling as.matrix')
     TrainData=as.matrix(TrainData)
@@ -61,11 +64,23 @@ RandomForestClassifier=function(TrainData,TrainCls,TestData,Names,NumberOfTrees=
   
 	if(!missing(Seed))
 			set.seed(Seed)
-		
-  model = randomForest::randomForest(as.factor(TrainCls) ~ .,data =  TrainData, ntree = NumberOfTrees, na.action = randomForest::na.roughfix, 
-                                              importance=VariableImportance, proximity=TRUE, replace = T
-	)
-  if(isTRUE(VariableImportance)){
+	
+  if(isTRUE(Fast)){
+    DF=as.data.frame(TrainData)
+    DF$TrainCls=as.factor(TrainCls) 
+    requireNamespace("randomForestSRC")
+    model=randomForestSRC::rfsrc.fast(TrainCls ~ .,data =  DF, ntree = NumberOfTrees, 
+                          importance=VariableImportance, proximity=TRUE,
+                          forest=TRUE
+    )
+  }else{
+    requireNamespace("randomForest")
+    model = randomForest::randomForest(as.factor(TrainCls) ~ .,data =  TrainData, ntree = NumberOfTrees, na.action = randomForest::na.roughfix, 
+                                       importance=VariableImportance, proximity=TRUE, replace = T
+    )
+  }
+
+  if(isTRUE(VariableImportance)&isFALSE(Fast)){
   	Importance=randomForest::importance(model)
   	ind1=which(colnames(Importance)=='MeanDecreaseAccuracy')
   	ind2=which(colnames(Importance)=='MeanDecreaseGini')
@@ -79,7 +94,7 @@ RandomForestClassifier=function(TrainData,TrainCls,TestData,Names,NumberOfTrees=
     ImportancePerClass=NULL
     ImportancePerVariable=NULL
   }
-	if(isTRUE(ABCanalysis)&isTRUE(VariableImportance)){
+	if(isTRUE(ABCanalysis)&isTRUE(VariableImportance)&isFALSE(Fast)){
 	  requireNamespace("ABCanalysis")
 	  ind=ABCanalysis::ABCanalysis(ImportancePerVariable[,1])$Aind
 	}else{
@@ -98,8 +113,15 @@ RandomForestClassifier=function(TrainData,TrainCls,TestData,Names,NumberOfTrees=
 	  if(NC!=ncol(TestData)){
 	    warning('"TestData" has not the same numbr of columns as "TrainData"')
 	  }
-	  
-	  TestCls = as.numeric(predict(model,newdata = as.matrix(TestData)))
+	  if(isTRUE(Fast)){
+	    #TestCls = as.numeric(predict(model,newdata = as.data.frame(TestData)))
+	    TestClsV = predict(model,newdata = as.data.frame(TestData))
+	    predicted=TestClsV$predicted
+	    TestCls=apply(predicted, 1, which.max)
+	  }else{
+	    TestCls = as.numeric(predict(model,newdata = as.matrix(TestData)))
+	  }
+	 
 	}else{
 	  TestCls=NULL
 	}
@@ -108,5 +130,11 @@ RandomForestClassifier=function(TrainData,TrainCls,TestData,Names,NumberOfTrees=
 	if(PlotIt)
 		plot(model)
 		
-return(list(Classification=as.numeric(model$predicted),ImportancePerVariable=ImportancePerVariable,ContingencyTable=model$confusion,ImportancePerClass=ImportancePerClass,Forest=model,MostImportantFeatures=ind,TestCls=TestCls))
+return(list(Classification=as.numeric(model$predicted),
+            ImportancePerVariable=ImportancePerVariable,
+            ContingencyTable=model$confusion,
+            ImportancePerClass=ImportancePerClass,
+            Forest=model,
+            MostImportantFeatures=ind,
+            TestCls=TestCls))
 }

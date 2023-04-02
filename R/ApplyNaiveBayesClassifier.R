@@ -53,14 +53,14 @@ ApplyNaiveBayesClassifier=function(Data,UniqueClasses,MeanPerClass,StdPerClass,W
   } # for c=1:NrOfClasses
   
   # jetzt bayes Klassifizieren
-  BayesCls = Cls * NaN   # initialisieren
+  BayesCls = 1:nrow(Data) * NaN   # initialisieren
   MaxInd = apply(NaiveBayesPosteriori,1,which.max)
   #matlab: [MaxBayes MaxInd] = nanmax(NaiveBayesPosteriori,[],2)  # das maximum bestimmen, dies ist der Index der zuzuordnenden Klasse
   BayesCls = UniqueClasses[MaxInd]                      # die entsprechende Klasse zuordnen
   
   if (PlotIt) {
     # zeichnen
-    PlotPixMatrix(cbind(NaiveBayesPosteriori, Cls, BayesCls))
+    print(DataVisualizations::Pixelmatrix(cbind(NaiveBayesPosteriori)))#, Cls,BayesCls)))
   }  #  if PlotIt==1  # zeichnen
   
   return(BayesCls)

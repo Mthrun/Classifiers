@@ -8,31 +8,23 @@ ApplyNaiveBayesClassifier
  Anwendung eines Naiven Bayes Klassifiers:
 }
 \usage{
-ApplyNaiveBayesClassifiern(Data,UniqueClasses,MeanPerClass,StdPerClass,WeightsPerClass, PlotIt=TRUE)
+ApplyNaiveBayesClassifier(Data,UniqueClasses,MeanPerClass,StdPerClass,
+WeightsPerClass, PlotIt=TRUE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{Data}{
-(1:d,1:n)            the  data n-dimensional data, cases in rows
+\item{Data}{(1:d,1:n) the data n-dimensional data, cases in rows
 }
-  \item{UniqueClasses}{
-(1:NrOfClasses)     Klassenbeziechnungen
-}  \item{MeanPerClass}{
-(1:NrOfClasses,1:n)  klassenbezogene Mittelwerte fuer jede Variable
-}  \item{StdPerClass}{
-(1:NrOfClasses,1:n)  klassenbezogene Std fuer jede Variable
-}  \item{WeightsPerClass}{
-(1:NrOfClasses)   relative Klassengroesse
+\item{UniqueClasses}{ (1:NrOfClasses) Klassenbeziechnungen}
+\item{MeanPerClass}{(1:NrOfClasses,1:n)  klassenbezogene Mittelwerte fuer jede
+Variable}
+\item{StdPerClass}{(1:NrOfClasses,1:n) klassenbezogene Std fuer jede Variable}
+\item{WeightsPerClass}{(1:NrOfClasses) relative Klassengroesse}
+\item{PlotIt}{==T (default) plots are made}
 }
- \item{PlotIt}{
-                ==T (default) plots are made
-}
-} 
-
 \value{
-BayesCls(1:d)                    die Klassifizierung des naive bayes Klassifikators
+\item{BayesCls}{(1:d) die Klassifizierung des naive bayes Klassifikators}
 }
-
 \author{
 Michael Thrun
 }

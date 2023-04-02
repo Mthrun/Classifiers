@@ -1,3 +1,5 @@
 exportPattern("^[[:alpha:]]+")
+import(Rcpp)
+useDynLib(Classifiers, .registration = TRUE)
  importFrom("graphics", "plot")
   #importFrom("utils", "setWinProgressBar", "winProgressBar")

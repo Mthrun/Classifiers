@@ -8,7 +8,9 @@ AnalysisOfClassifier(TrueClassification, CLS)
 \item{TrueClassification}{vector of integer numbers representing the TRUE classification}
 \item{CLS}{vector of integer numbers representing the CLASSIFIER'S classification}
 }
-\value{UniqueClasses           the different classes in TrueClassification}
+\value{
+\item{UniqueClasses}{the different classes in TrueClassification}
+}
 \description{
  measure a classifier's performance. }
 

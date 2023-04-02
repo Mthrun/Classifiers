@@ -1,14 +1,16 @@
 Package: Classifiers
 Type: Package
 Title: Common Supervised Machine Learning Algorithms
-Version: 1.4.4
-Date: 2020-02-02
-Author: Michael Thrun, Rabea Griese, Alfred Ultsch
+Version: 1.5.2
+Date: 2023-03-30
+Authors@R: c(person("Michael", "Thrun", email= "m.thrun@gmx.net",role=c("aut","cre","cph"), comment = c(ORCID = "0000-0001-9542-5543")),person("Rabea", "Griese",role=c("ctb","ctr")),person("Murray", "Efford",role=c("ctb")),person("Alfred", "Ultsch",role="aut"))
 Maintainer: Michael Thrun <mthrun@mathematik.uni-marburg.de>
 Description: Conventional supervised learning algorithms.
 LazyLoad: yes
-Imports: 
-Suggest: randomForest, AdaptGauss, Distances, DataVisualizations, e1071, ABCanalysis, dtwclust
+Imports: Rcpp, ProjectionBasedClustering, Distances, FCPS
+LinkingTo: Rcpp
+NeedsCompilation: yes
+Suggest: randomForestSRC, randomForest, AdaptGauss, Distances, DataVisualizations, e1071, ABCanalysis, dtwclust, FCPS, ProjectionBasedClustering, RSNNS
 Depends: R (>= 2.10)
 License: CC BY-NC 4.0
 LazyLoad: yes

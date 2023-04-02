@@ -1,8 +1,6 @@
 SupportVectorMachines=function(TrainData,TrainCls,TestData,
-                                                    
-                                                    Method="C-classification",Scale=rep(FALSE,ncol(TrainData)),
-                                                    
-                                                    Kernel="linear",Gamma=round(1/ncol(TrainData),2),CoefR=0,PolynomialDegree=3,CostC=1,Nu,...)
+                               Method="C-classification",Scale=rep(FALSE,ncol(TrainData)),
+                               Kernel="linear",Gamma=round(1/ncol(TrainData),2),CoefR=0,PolynomialDegree=3,CostC=1,Nu,...)
 {
 #Results=SupportVectorMachines(TrainData,TrainCls,TestData, Method="C-classification",Scale=rep(FALSE,ncol(TrainData)),Kernel="linear",Gamma=round(1/ncols(TrainData),2),CoefR=0,PolynomialDegree=3,CostC=1,Nu) 
 #
@@ -53,6 +51,11 @@ SupportVectorMachines=function(TrainData,TrainCls,TestData,
 #author: MT 2018
   requireNamespace('e1071')
 
+#A comparative study on large scale kernelized support vector machines
+#D Horn, A Demircioğlu, B Bischl, T Glasmachers, C Weihs
+#Advances in Data Analysis and Classification 12 (4), 867-883
+#front end of https://www.csie.ntu.edu.tw/~cjlin/libsvm/
+#mit subsampling selbst bei bigdata ist e1071 beste library.
   if(missing(Nu))
     model=e1071::svm(x=TrainData,y=TrainCls,scale=Scale,type=Method,kernel=Kernel,degree=PolynomialDegree,gamma=Gamma,coef0=CoefR,cost=CostC,...)
   else
