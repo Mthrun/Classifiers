@@ -27,9 +27,19 @@ if (n != ncls) {
 }
 
 
-KNNTestCls=zeros(m,1);
-NearestInd = zeros(m,k);
+KNNTestCls=matrix(0,m,1);
+NearestInd = matrix(0,m,k);
 #Tacho <- winProgressBar(label = paste("KNNclassifier: i= ",toString(m)), min = 0, max = m , width = 300)
+ones=function (n, m = n) 
+{
+  if (m == 1) {
+    return(c(1:n) * 0 + 1)
+  }
+  else {
+    return(matrix(1, n, m))
+  }
+}
+
 
 for(i in 1:m){
   if(0 == 1000%%i){
